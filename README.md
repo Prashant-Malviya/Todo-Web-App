@@ -23,10 +23,3 @@ This project is a simple TODO application built using Vite and React for the fro
 - **Frontend**: Vite, React
 - **Backend**: Node.js, Express
 
-## Installation and Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/todo-app.git
-   cd todo-app
-# Todo-Web-App
