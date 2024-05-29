@@ -12,7 +12,7 @@ const SignInForm = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-      <form className="bg-white p-8 rounded-lg shadow-lg w-80">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-80">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-700">Sign In</h2>
         <div className="mb-5">
           <label className="block text-gray-700">Email</label>
