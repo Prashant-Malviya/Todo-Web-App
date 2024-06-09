@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 
 const SignUpForm = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -13,44 +16,65 @@ const SignUpForm = () => {
       return;
     }
     // Handle sign up logic here, e.g., call API
-    console.log('Sign Up:', { email, password });
+    console.log('Sign Up:', { firstName, lastName, email, password });
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
-      <form className="bg-white p-8 rounded-lg shadow-lg w-80" onSubmit={handleSubmit}>
+      <form className="bg-white px-10 py-3 m-2  rounded-lg shadow-lg lg:w-96 md:w-96 w-72" onSubmit={handleSubmit}>
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-700">Sign Up</h2>
-        <div className="mb-5">
+        <div className="mb-2">
+          <label className="block text-gray-700">First Name</label>
+          <input
+            type="text"
+            className="w-full p-1.5 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div className="mb-2">
+          <label className="block text-gray-700">Last Name</label>
+          <input
+            type="text"
+            className="w-full p-1.5 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+        <div className="mb-2">
           <label className="block text-gray-700">Email</label>
           <input
             type="email"
-            className="w-full p-3 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-1.5 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-5">
+        <div className="mb-2">
           <label className="block text-gray-700">Password</label>
           <input
             type="password"
-            className="w-full p-3 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-1.5 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="mb-5">
+        <div className="mb-2">
           <label className="block text-gray-700">Confirm Password</label>
           <input
             type="password"
-            className="w-full p-3 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-1.5 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-green-400"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
         {error && <p className="text-red-500 text-sm mb-5">{error}</p>}
-        <button type="submit" className="w-full bg-green-500 text-white p-3 rounded hover:bg-green-600 transition duration-300">
+        <div className='flex justify-center items-center '>
+        <Button type='submit' variant='outline-primary' className='font-bold text-lg my-1'>
           Sign Up
-        </button>
+        </Button>
+        </div>
+       
       </form>
     </div>
   );

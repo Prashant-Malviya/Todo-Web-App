@@ -2,7 +2,7 @@ import React from 'react'
 
 function About() {
   return (
-    <div className='mb-48 mt-4'>
+    <div className='mb-4 mt-4 min-h-screen max-h-auto'>
        <div className='container'>
        <div className='flex flex-col'>
        <h2 className="text-2xl mb-4 font-bold bg-gradient-to-br from-blue-700 to-red-700 bg-clip-text text-transparent">About Us</h2>

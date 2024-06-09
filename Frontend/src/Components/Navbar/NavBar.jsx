@@ -36,14 +36,14 @@ function NavBar() {
           <Nav className="space-x-2 font-bold">
 
           <Link to="/signup">
-          <Button variant="outline-primary">SignUp</Button>
+          <Button variant="outline-primary" className="font-bold">Sign Up</Button>
           </Link>
           
           <Link to="/signin">
-          <Button variant="outline-primary">SignIn</Button>
+          <Button variant="outline-primary" className="font-bold">Sign In</Button>
           </Link>
 
-          <Button variant="outline-danger">Log Out</Button>
+          <Button variant="outline-danger" className="font-bold">Log Out</Button>
             
             <img
               className="img-fluid w-14 h-10 cursor-pointer"
