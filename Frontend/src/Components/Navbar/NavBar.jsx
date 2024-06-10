@@ -1,14 +1,20 @@
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import userImg from "../img/user.png";
 import { LuListTodo } from "react-icons/lu";
 import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom";
-
-
+import { Link, useNavigate } from "react-router-dom";
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Perform any logout logic here
+    navigate('/signin'); // Navigate to the signin page
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
@@ -43,12 +49,12 @@ function NavBar() {
           <Button variant="outline-primary" className="font-bold">Sign In</Button>
           </Link>
 
-          <Button variant="outline-danger" className="font-bold">Log Out</Button>
+          <Button variant="outline-danger" className="font-bold" onClick={handleLogout}>Log Out</Button>
             
             <img
               className="img-fluid w-14 h-10 cursor-pointer"
               src={userImg}
-              alt="user image"
+              alt="user"
             />
           </Nav>
         </Navbar.Collapse>
