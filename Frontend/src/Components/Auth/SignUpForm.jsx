@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/esm/Button';
+import axios from 'axios'; // Import axios for making HTTP requests
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -9,14 +10,24 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    // Handle sign up logic here, e.g., call API
-    console.log('Sign Up:', { firstName, lastName, email, password });
+    try {
+      const response = await axios.post('http://localhost:1000/api/v1/register', {
+        firstName,
+        lastName,
+        email,
+        password
+      });
+      console.log('Sign Up:', response.data);
+    } catch (error) {
+      console.error('Sign Up Error:', error.response.data.message);
+      setError(error.response.data.message);
+    }
   };
 
   return (

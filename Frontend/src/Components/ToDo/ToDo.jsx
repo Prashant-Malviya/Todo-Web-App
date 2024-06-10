@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button"; // Corrected import path
+import Button from "react-bootstrap/Button";
 import TodoCard from "./TodoCard";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import AddTodoModal from "./Modal/AddTodoModal";
 
 function ToDo() {
-  const [showDescription, setShowDescription] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [inputs, setInputs] = useState({ title: "", description: "", type: "", dueDate: "" });
   const [todoItems, setTodoItems] = useState([]);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,7 +21,8 @@ function ToDo() {
     if (inputs.title && inputs.description && inputs.type && inputs.dueDate) {
       setTodoItems([...todoItems, inputs]);
       setInputs({ title: "", description: "", type: "", dueDate: "" });
-      setShowDescription(false); // Reset description field visibility
+      setShowModal(false); // Close the modal
+      toast.success("Todo item added successfully");
     }
   };
 
@@ -26,87 +31,72 @@ function ToDo() {
   const deleteSelectedItem = (id) => {
     const updatedItems = todoItems.filter((_, index) => index !== id);
     setTodoItems(updatedItems);
+    toast.success("Todo item deleted successfully");
+  };
+
+  const handleDeleteConfirmation = (id) => {
+    setSelectedItemId(id);
+    setConfirmationVisible(true);
+  };
+
+  const handleDeleteConfirmed = () => {
+    deleteSelectedItem(selectedItemId);
+    setConfirmationVisible(false);
   };
 
   useEffect(() => {
     if (selectedId >= 0 && selectedId < todoItems.length) {
-      deleteSelectedItem(selectedId);
+      handleDeleteConfirmation(selectedId);
     }
   }, [selectedId]);
 
   return (
-    <div className="w-[100%] min-h-screen max-h-auto">
-      <div className="container flex flex-col justify-center items-center">
-        <div className="flex flex-col lg:w-96 md:w-96 w-72 border-2 rounded-md mt-5 space-y-2 shadow-2xl">
-          <input
-            type="text"
-            placeholder="Title"
-            className="w-full p-2 outline-none"
-            onClick={() => {
-              setShowDescription(true);
-            }}
-            onChange={handleChange}
-            name="title"
-            value={inputs.title}
-          />
-          {showDescription && (
-            <>
-              <textarea
-                className="w-full p-2 outline-none"
-                placeholder="Description"
-                onChange={handleChange}
-                name="description"
-                value={inputs.description}
-              />
-              <select
-                className="w-full p-2 outline-none"
-                onChange={handleChange}
-                name="type"
-                value={inputs.type}
-              >
-                <option value="">Select Type</option>
-                <option value="Official">Official</option>
-                <option value="Personal">Personal</option>
-                <option value="Hobby">Hobby</option>
-              </select>
-              <input
-                type="date"
-                className="w-full p-2 outline-none"
-                onChange={handleChange}
-                name="dueDate"
-                value={inputs.dueDate}
-              />
-            </>
-          )}
-        </div>
-        <div className="lg:w-96 md:w-96 w-72 flex justify-end my-2">
-          <Button
-            variant="outline-primary"
-            className="font-bold px-3"
-            onClick={handleSubmit}
-          >
-            Add
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
+      <div className="w-full max-w-4xl mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h1 className="text-3xl font-semibold mb-6 text-center">My Todo List</h1>
+          <Button variant="primary" className="mb-4 w-full" onClick={() => setShowModal(true)}>
+            Add Todo
           </Button>
         </div>
       </div>
-      <div className="todo-body mb-3">
-        <div className="container-fluid">
-          <div className="row">
-            {todoItems &&
-              todoItems.map((item, index) => (
-                <div className="col-lg-3 col-10 mx-5 my-2" key={index}>
-                  <TodoCard
-                    title={item.title}
-                    description={item.description}
-                    type={item.type}
-                    dueDate={item.dueDate}
-                    id={index}
-                  />
-                </div>
-              ))}
-          </div>
+      <div className="w-full max-w-4xl mx-auto mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {todoItems.map((item, index) => (
+            <TodoCard
+              key={index}
+              title={item.title}
+              description={item.description}
+              type={item.type}
+              dueDate={item.dueDate}
+              id={index}
+              onDelete={() => handleDeleteConfirmation(index)}
+            />
+          ))}
         </div>
       </div>
+      <AddTodoModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        inputs={inputs}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      />
+      {confirmationVisible && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="text-lg font-semibold mb-4">Are you sure you want to delete this todo item?</p>
+            <div className="flex justify-end">
+              <Button variant="danger" className="mr-2" onClick={handleDeleteConfirmed}>
+                Yes
+              </Button>
+              <Button variant="secondary" onClick={() => setConfirmationVisible(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

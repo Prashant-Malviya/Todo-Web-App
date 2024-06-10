@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/esm/Button';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle sign in logic here, e.g., call API
-    console.log('Sign In:', { email, password });
+    try {
+      const response = await axios.post('http://localhost:1000/api/v1/signin', {
+        email,
+        password,
+      });
+      console.log('Sign In:', response.data);
+    } catch (error) {
+      console.error('Sign In Error:', error);
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        setError(error.response.data.message);
+      } else if (error.request) {
+        // Request was made but no response received
+        setError('No response from server. Please try again later.');
+      } else {
+        // Something else happened while setting up the request
+        setError('An unexpected error occurred. Please try again.');
+      }
+    }
   };
 
   return (
@@ -33,12 +52,12 @@ const SignInForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className='flex justify-center items-center '>
-        <Button type='submit' variant='outline-primary' className='font-bold text-lg my-1'>
-          Sign In
-        </Button>
+        {error && <p className="text-red-500 text-sm mb-5">{error}</p>}
+        <div className='flex justify-center items-center'>
+          <Button type='submit' variant='outline-primary' className='font-bold text-lg my-1'>
+            Sign In
+          </Button>
         </div>
-       
       </form>
     </div>
   );
