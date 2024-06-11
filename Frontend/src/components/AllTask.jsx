@@ -18,7 +18,7 @@ function AllTask() {
                         )
                     })
                 ) : (
-                    <h1>No Task Found</h1>
+                    <h1 className='font-bold text-center text-2xl'>No Task Found</h1>
                 )
             }
         </div>

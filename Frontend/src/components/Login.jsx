@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from "../Axios/axios.js";
 import TokenContext from '../context/TokenContext.js';
+import loginImg from './img/login img.png'
 
 function Login() {
     const [formData, setFormData] = useState({});
@@ -33,8 +34,8 @@ function Login() {
                 <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8">
                     <div className="md:w-1/2 mb-12 md:mb-0">
                         <img 
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" 
-                            className="w-full rounded-lg shadow-lg" 
+                            src={loginImg} 
+                            className="w-full rounded-lg animate-bounceSlow" 
                             alt="Sample" 
                         />
                     </div>

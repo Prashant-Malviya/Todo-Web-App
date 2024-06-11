@@ -46,7 +46,7 @@ function Task({ task, id }) {
                     style={{ fontSize: 30, cursor: "pointer" }}
                     size="large"
                     onClick={handleRemove}
-                    className="remove-task-btn bg-blue-700 rounded-full border-2 shadow-2xl border-white p-1" />
+                    className="remove-task-btn bg-red-600 rounded-full border-2 shadow-2xl border-white p-1" />
             </div>
         </div>
     );
