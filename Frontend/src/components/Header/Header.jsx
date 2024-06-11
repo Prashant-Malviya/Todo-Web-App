@@ -14,9 +14,9 @@ function Header() {
 
     return (
         <div>
-            <nav className='header bg-slate-200 flex justify-between items-center'>
+            <nav className='header bg-slate-200 flex justify-between items-center py-2'>
                 <div className="logo w-1/4 text-center">
-                    <NavLink to="/">Todo App</NavLink>
+                    <NavLink to="/">Todo</NavLink>
                 </div>
                 <div className='flex justify-between'>
                     {
