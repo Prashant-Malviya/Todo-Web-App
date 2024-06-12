@@ -1,5 +1,5 @@
-import taskModel from "../models/taskModel.js";
-import userModel from "../models/userModel.js";
+import taskModel from "../models/task-model.js";
+import userModel from "../models/user-model.js";
 import { createTransport } from 'nodemailer';
 import dotenv from "dotenv";
 dotenv.config();
@@ -59,4 +59,30 @@ const getTask = (req, res) => {
         .then((data) => res.status(200).json(data))
         .catch((error) => res.status(501).json({ message: error.message }))
 }
-export { addTask, getTask,removeTask }
+
+
+const updateTask = async (req, res) => {
+    const taskId = req.params.id;
+    const { title, description, type, dueDate } = req.body;
+
+    try {
+        const task = await taskModel.findById(taskId);
+
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        task.title = title;
+        task.description = description;
+        task.type = type;
+        task.dueDate = dueDate;
+
+        await task.save();
+
+        return res.status(200).json({ message: "Task updated successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export { addTask, getTask,removeTask, updateTask }

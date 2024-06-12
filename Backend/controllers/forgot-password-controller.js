@@ -1,4 +1,4 @@
-import userModel from "../models/userModel.js";
+import userModel from "../models/user-model";
 import { createTransport } from "nodemailer"
 import crypto from "crypto"
 import bcrypt from "bcrypt"
@@ -21,7 +21,7 @@ const forgotPassword = async (req, res) => {
     await user.save();
     
     //Send email with reset token
-    const resetUrl = `https://todo-app-b96a5.web.app/resetPassword?token=${resetToken}`;
+    const resetUrl = `http://localhost:3000/resetPassword?token=${resetToken}`;
     var transporter = createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
@@ -34,7 +34,7 @@ const forgotPassword = async (req, res) => {
     });
 
     var mailOptions = {
-        from: 'alok.yadav6000@gmail.com',
+        from: 'prashantmalviya272002@gmail.com',
         to: email,
         subject: "Reset Password",
         html:`<h1>Reset Password</h1><h2>Click on the link to reset your password</h2><h3>${resetUrl}</h3>`
