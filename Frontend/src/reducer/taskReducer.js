@@ -31,6 +31,34 @@ function taskReducer(tasks, action) {
                 return task;
             });
         }
+
+        case "EDIT_TASK": {
+            return tasks.map((task, index) => {
+                if (index === action.id) {
+                    return {
+                        ...task,
+                        title: action.task.title,
+                        description: action.task.description,
+                        type: action.task.type,
+                        dueDate: action.task.dueDate
+                    };
+                }
+                return task;
+            });
+        }
+
+        // case "EDIT_TASK": {
+        //     return tasks.map((task, index) => {
+        //         if (index === action.id) {
+        //             return {
+        //                 ...task,
+        //                 ...action.task
+        //             };
+        //         }
+        //         return task;
+        //     });
+        // }
+
         default: {
             throw new Error("Unknown action: " + action.type);
         }

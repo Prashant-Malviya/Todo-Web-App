@@ -16,6 +16,7 @@ import Register from './components/Register';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
 import ResetPassword from './components/forgotPassword/ResetPassword';
 import axios from './Axios/axios.js';
+import Overdue from './components/Overdue.jsx';
 function App() {
   const token = JSON.parse(localStorage.getItem("authToken"));
   const [tasks, dispatch] = useReducer(taskReducer, [])
@@ -70,6 +71,7 @@ function App() {
                 <Route index element={<AllTask />} />
                 <Route path="active" element={<Active />} />
                 <Route path="completed" element={<Completed />} />
+                <Route path="overdue" element={<Overdue />} /> 
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
