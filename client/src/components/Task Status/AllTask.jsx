@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import Task from './Task/Task';
+import Task from '../components/Task/Task';
 import TaskContext from '../context/TaskContext';
 
 function AllTask() {

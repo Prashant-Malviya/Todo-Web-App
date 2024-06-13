@@ -1,16 +1,16 @@
 import React, { useState, useContext } from "react";
-import TaskContext from "../../context/TaskContext";
-import TokenContext from "../../context/TokenContext";
+import TaskContext from "../../context/TaskContext.js";
+import TokenContext from "../../context/TokenContext.js";
 import axios from "../../Axios/axios.js";
-import "./createTask.css";
+import "../../css/CreateTask.css";
 
 function CreateTask() {
   const { dispatch } = useContext(TaskContext);
   const { userToken } = useContext(TokenContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [type, setType] = useState(""); // New state for type
-  const [dueDate, setDueDate] = useState(""); // New state for due date
+  const [type, setType] = useState(""); 
+  const [dueDate, setDueDate] = useState(""); 
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -20,8 +20,8 @@ function CreateTask() {
         {
           title,
           description,
-          type, // Include type in the request
-          dueDate, // Include due date in the request
+          type, 
+          dueDate, 
         },
         {
           headers: {
@@ -33,13 +33,13 @@ function CreateTask() {
         type: "ADD_TASK",
         title,
         description,
-        taskType: type, // Include type in the dispatch
-        dueDate, // Include due date in the dispatch
+        taskType: type, 
+        dueDate, 
       });
       setTitle("");
       setDescription("");
-      setType(""); // Reset type
-      setDueDate(""); // Reset due date
+      setType(""); 
+      setDueDate(""); 
     } catch (error) {
       console.log(error);
     }

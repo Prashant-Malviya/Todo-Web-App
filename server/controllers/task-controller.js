@@ -1,88 +1,75 @@
 import taskModel from "../models/task-model.js";
 import userModel from "../models/user-model.js";
-import { createTransport } from 'nodemailer';
-import dotenv from "dotenv";
-dotenv.config();
-
- const sendMail = (email, subject, title, description) => {
-    var transporter = createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.GMAIL_USERNAME,
-            pass: process.env.GMAIL_PASSWORD
-        }
-    });
-
-    var mailOptions = {
-        from: 'prashantmalviya272002@gmail.com',
-        to: email,
-        subject: subject,
-        html:`<h1>Task added successfully</h1><h2>Title: ${title}</h2><h3>Description: ${description}</h3>`
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
- }
+import { sendMail } from "../utils/mail-util.js";
 
 const addTask = async (req, res) => {
-    const { title, description } = req.body;
-    const userId = req.user.id;
-    const user = await userModel.find({_id: userId});
-    const newTask = new taskModel({ title, description, completed: false, userId })
-    newTask.save()
-        .then(() => {
-            sendMail(user[0].email, "Task Added", title, description)
-            return (res.status(200).json({ message: "Task added successfully" }))
-        })
-        .catch((error) => {
-            return (
-                res.status(500).json({ message: error.message })
-            )
-        }
-        )
-}
-const removeTask = (req, res) => {
-    const { id } = req.body;
-    console.log("id: ", id);
-    taskModel.findByIdAndDelete(id)
-        .then(() => res.status(200).json({ message: "Task deleted successfully" }))
-        .catch((error) => res.status(501).json({ message: error.message }))
-}
+  const { title, description } = req.body;
+  const userId = req.user.id;
 
-const getTask = (req, res) => {
-    taskModel.find({ userId: req.user.id })
-        .then((data) => res.status(200).json(data))
-        .catch((error) => res.status(501).json({ message: error.message }))
-}
+  try {
+    const user = await userModel.findById(userId);
 
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newTask = new taskModel({
+      title,
+      description,
+      completed: false,
+      userId,
+    });
+    await newTask.save();
+    sendMail(user.email, "Task Added", title, description);
+
+    res.status(200).json({ message: "Task added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const removeTask = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    await taskModel.findByIdAndDelete(id);
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getTasks = async (req, res) => {
+  try {
+    const tasks = await taskModel.find({ userId: req.user.id });
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const updateTask = async (req, res) => {
-    const taskId = req.params.id;
-    const { title, description, type, dueDate } = req.body;
+  const taskId = req.params.id;
+  const { title, description, type, dueDate } = req.body;
 
-    try {
-        const task = await taskModel.findById(taskId);
+  try {
+    const task = await taskModel.findById(taskId);
 
-        if (!task) {
-            return res.status(404).json({ message: "Task not found" });
-        }
-
-        task.title = title;
-        task.description = description;
-        task.type = type;
-        task.dueDate = dueDate;
-
-        await task.save();
-
-        return res.status(200).json({ message: "Task updated successfully" });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
-}
 
-export { addTask, getTask,removeTask, updateTask }
+    task.title = title;
+    task.description = description;
+    task.type = type;
+    task.dueDate = dueDate;
+
+    await task.save();
+
+    res.status(200).json({ message: "Task updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { addTask, getTasks, removeTask, updateTask };

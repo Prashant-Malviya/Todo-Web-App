@@ -1,22 +1,21 @@
-import './App.css';
+import './css/App.css';
 import { useEffect, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Active from './components/Active';
-import Completed from './components/Completed';
-import AllTask from './components/AllTask';
-import Layout from './components/Layout';
+import Active from './components/Task Status/Active';
+import Completed from './components/Task Status/Completed';
+import AllTask from './components/Task Status/AllTask';
+import Layout from './components/Layout/Layout';
 import TaskContext from './context/TaskContext';
 import TokenContext from './context/TokenContext';
 import taskReducer from './reducer/taskReducer';
 import tokenReducer from './reducer/tokenReducer';
 import userReducer from './reducer/userReducer';
 import Header from './components/Header/Header';
-import Login from './components/Login';
-import Register from './components/Register';
-import ForgotPassword from './components/forgotPassword/ForgotPassword';
-import ResetPassword from './components/forgotPassword/ResetPassword';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 import axios from './Axios/axios.js';
-import Overdue from './components/Overdue.jsx';
+import Overdue from './components/Task Status/Overdue';
+
 function App() {
   const token = JSON.parse(localStorage.getItem("authToken"));
   const [tasks, dispatch] = useReducer(taskReducer, [])
@@ -75,8 +74,6 @@ function App() {
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/resetPassword" element={<ResetPassword />} />
             </Route>
           </Routes>
         </TaskContext.Provider>

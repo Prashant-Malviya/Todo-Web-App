@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import moment from "moment";
-import "./task.css";
+import "../../css/task.css";
 import TaskContext from "../../context/TaskContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";

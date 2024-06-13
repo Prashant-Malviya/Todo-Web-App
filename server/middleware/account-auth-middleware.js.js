@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
-const requireAuth = (req, res, next) => {
+const ensureAccess = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+
     if (!token) {
         return res.status(401).json({ message: 'Authorization denied, no token provided' });
     }
@@ -16,4 +16,4 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-export default requireAuth;
+export default ensureAccess;
