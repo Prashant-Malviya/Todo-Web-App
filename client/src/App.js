@@ -1,20 +1,20 @@
-import './css/App.css';
+import './css/app.css';
 import { useEffect, useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Active from './components/Task Status/Active';
-import Completed from './components/Task Status/Completed';
-import AllTask from './components/Task Status/AllTask';
-import Layout from './components/Layout/Layout';
-import TaskContext from './context/TaskContext';
-import TokenContext from './context/TokenContext';
-import taskReducer from './reducer/taskReducer';
-import tokenReducer from './reducer/tokenReducer';
-import userReducer from './reducer/userReducer';
-import Header from './components/Header/Header';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
+import Active from './components/task-status/active.jsx';
+import Completed from './components/task-status/completed.jsx';
+import AllTask from './components/task-status/all-task.jsx';
+import Layout from './components/layout/layout.jsx';
+import TaskContext from './context/task-context.js';
+import TokenContext from './context/token-context.js';
+import taskReducer from './reducer/task-reducer.js';
+import tokenReducer from './reducer/token-reducer.js';
+import userReducer from './reducer/user-reducer.js';
+import Header from './components/header/header';
+import Login from './components/auth/login.jsx';
+import Register from './components/auth/register';
 import axios from './Axios/axios.js';
-import Overdue from './components/Task Status/Overdue';
+import Overdue from './components/task-status/overdue';
 
 function App() {
   const token = JSON.parse(localStorage.getItem("authToken"));

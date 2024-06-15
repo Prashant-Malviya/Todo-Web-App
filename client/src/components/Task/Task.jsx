@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import moment from "moment";
 import "../../css/task.css";
-import TaskContext from "../../context/TaskContext";
+import TaskContext from "../../context/task-context";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditTaskModal from "../EditTaskModal/EditTaskModal";
+import EditTaskModal from "../edit-task-modal/EditTaskModal";
 import { MdEdit } from "react-icons/md";
 
 function Task({ task, id }) {

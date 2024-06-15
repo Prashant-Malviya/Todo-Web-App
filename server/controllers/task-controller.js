@@ -3,7 +3,7 @@ import userModel from "../models/user-model.js";
 import { sendMail } from "../utils/mail-util.js";
 
 const addTask = async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, type } = req.body;
   const userId = req.user.id;
 
   try {
@@ -17,12 +17,13 @@ const addTask = async (req, res) => {
       title,
       description,
       completed: false,
+      type,
       userId,
     });
     await newTask.save();
     sendMail(user.email, "Task Added", title, description);
 
-    res.status(200).json({ message: "Task added successfully" });
+    res.status(201).json({ message: "Task added successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -32,8 +33,14 @@ const removeTask = async (req, res) => {
   const { id } = req.body;
 
   try {
-    await taskModel.findByIdAndDelete(id);
-    res.status(200).json({ message: "Task deleted successfully" });
+    const task = await taskModel.findById(id);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    task.deleted = true;
+    await task.save();
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -41,7 +48,7 @@ const removeTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await taskModel.find({ userId: req.user.id });
+    const tasks = await taskModel.find({ userId: req.user.id, deleted: false });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -72,4 +79,24 @@ const updateTask = async (req, res) => {
   }
 };
 
-export { addTask, getTasks, removeTask, updateTask };
+const updateTaskStatus = async (req, res) => {
+  const taskId = req.params.id;
+  const { completed } = req.body;
+
+  try {
+    const task = await taskModel.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    task.completed = completed;
+    await task.save();
+
+    res.status(200).json({ message: "Task status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { addTask, getTasks, removeTask, updateTask, updateTaskStatus };

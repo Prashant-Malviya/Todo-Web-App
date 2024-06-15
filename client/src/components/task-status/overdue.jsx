@@ -1,8 +1,8 @@
 // Overdue.jsx
 import React, { useContext } from 'react';
 import moment from 'moment';
-import Task from '../Task/Task';
-import TaskContext from '../../context/TaskContext';
+import Task from '../task/Task';
+import TaskContext from '../../context/task-context';
 
 function Overdue() {
     const { tasks } = useContext(TaskContext);

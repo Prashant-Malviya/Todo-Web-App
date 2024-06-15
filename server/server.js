@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 import userRouter from "./routes/user-route.js";
 import taskRouter from "./routes/task-route.js";
-import connectDB from "./config/connect-db"; 
+import connectDB from "./config/connect-db.js"; 
 import errorHandler from "./errors/error-handler.js"; 
 
 // Load environment variables from .env file
